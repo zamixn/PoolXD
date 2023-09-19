@@ -9,30 +9,31 @@ namespace FrameworksXD.PoolXD
         [Header("Pool settings")]
         [SerializeField] private PooledObject PooledGameObject;
         [SerializeField] private int InitialSize;
-        private Pool<PooledObject> Pool;
+        private Pool<IPooledObject> Pool;
 
         private void Awake()
         {
-            Pool = new Pool<PooledObject>(InstanceGetter, InitialSize, OnPutIntoPool, OnGotFromPool);
+            Pool = new Pool<IPooledObject>(InstanceGetter, InitialSize, OnPutIntoPool, OnGotFromPool);
         }
 
-        private PooledObject InstanceGetter()
+        private IPooledObject InstanceGetter()
         {
-            var go = Instantiate(PooledGameObject, transform);
-            return go;
+            var go = Instantiate(PooledGameObject.gameObject, transform);
+            var po = go.GetComponent<PooledObject>();
+            return po as IPooledObject;
         }
 
-        private void OnPutIntoPool(PooledObject go)
+        private void OnPutIntoPool(IPooledObject go)
         {
             go.OnPutIntoPool();
         }
 
-        private void OnGotFromPool(PooledObject go)
+        private void OnGotFromPool(IPooledObject go)
         {
             go.OnGotFromPool();
         }
 
-        public PooledObject Get()
+        public IPooledObject Get()
         {
             return Pool.Get();
         }

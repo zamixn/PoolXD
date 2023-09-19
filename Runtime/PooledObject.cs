@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FrameworksXD.PoolXD
 {
-    public abstract class PooledObject : MonoBehaviour
+    public abstract class PooledObject : MonoBehaviour, IPooledObject
     {
         public virtual void OnPutIntoPool()
         {
